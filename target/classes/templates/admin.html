@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        div.Wrapper *
+        {
+            color: white;
+        }
+
+        .deleteColor{
+            background-color:#DC143C;
+        }
+
+        .editColor {
+            background-color:#2E8B57;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="Wrapper">
+        <div class="float-right">
+            <h>User has login - </h>
+            <h th:text="${currentUser.getLogin()}"/>
+            <h>with role : </h>
+            <h th:text="${currentUser.getRoles()}"/>
+        </div>
+    </div>
+
+
+
+    <div class="Wrapper">
+        <div class="float-left">
+            <a href="/logout">logout</a>
+        </div>
+    </div>
+</nav>
+
+<div>
+    <div class="row no-gutters" >
+        <div class="col-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a sec:authorize="hasAuthority('ADMIN')" class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-admin" role="tab" aria-controls="v-pills-home" aria-selected="true">Admin</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-user" role="tab" aria-controls="v-pills-profile" aria-selected="false">User</a>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <div class="tab-content" id="v-pills-tabContent">
+                    <h1 sec:authorize="hasAuthority('ADMIN')">Admin Panel</h1>
+                    <div sec:authorize="hasAuthority('ADMIN')" class="tab-pane fade show active" id="v-pills-admin" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#user_table">User Table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#new_user">New User</a>
+                        </li>
+                    </ul>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="user_table">
+                                All Users
+                                <div>
+                                    <div class="table-responsive">
+                                        <table id="usersTable" class="table table-striped table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Login</th>
+                                            <th>Name</th>
+                                            <th>LastName</th>
+                                            <th>Password</th>
+                                            <th>Role</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="usersTableBody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="new_user">
+                                New User
+                                <div class="text-center">
+                                    <form>
+                                        <input type="hidden" name="login" id="idN" th:value="1"/>
+                                        <label for="loginN">Enter User Login</label>
+                                        </br>
+                                        <input type="text" name="login" id="loginN"/>
+                                        <br/>
+                                        <label for="FirstNameN">Enter First Name</label>
+                                        </br>
+                                        <input type="text" name="fn" id="FirstNameN"/>
+                                        <br/>
+                                        <label for="LastNameN">Enter Last Name</label>
+                                        </br>
+                                        <input type="text" name="ln" id="LastNameN"/>
+                                        <br/>
+                                        <label for="passwordN">Enter Password</label>
+                                        </br>
+                                        <input type="password" name="pass" id="passwordN"/>
+                                        <br/>
+                                        </br>
+                                        <input type="hidden" name="action" value="new">
+                                        </br>
+                                        <button onclick="newUser()"  type="button" class="btn btn-primary editColor">
+                                            Add new user
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+    </div>
+                    </div>
+
+
+
+                    <!-- Таблица пользователя -->
+                    <div class="tab-pane fade" id="v-pills-user" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit">Sign Out</button>
+                        </form>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Login</th>
+                                <th>FirstName</th>
+                                <th>LastName</th>
+                                <th>Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${currentUser.getId()}">model</td>
+                                <td th:text="${currentUser.getLogin()}">nick_name</td>
+                                <td th:text="${currentUser.getFirstName()}">model</td>
+                                <td th:text="${currentUser.getLastName()}">model</td>
+                                <td th:text="${currentUser.getRole()}">Role</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="tm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <div class="modal-body">
+                    <form name="modForm">
+                        <label for="id">User Id</label>
+                        </br>
+                        <input type="text" name="id" readonly value="" id="id"/>
+                        </br>
+                        <label for="login">Enter User Name</label>
+                        </br>
+                        <input type="text" name="mLogin" value="" id="login"/>
+                        </br>
+                        <label for="FirstName">Enter First Name</label>
+                        </br>
+                        <input type="text" name="fn" value="" id="FirstName"/>
+                        </br>
+                        <label for="LastName">Enter Last Name</label>
+                        </br>
+                        <input type="text" name="ln" value="" id="LastName"/>
+                        </br>
+                        <label for="password">Enter Password</label>
+                        </br>
+                        <input type="password" name="pass" value="" id="password"/>
+                        </br>
+
+                        <input name="r1" id="USER" type="radio" value="USER" checked> USER
+                        <input name="r1" id="ADMIN" type="radio" value="ADMIN"> ADMIN
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="editModal()"  class="btn btn-primary editColor">EDIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="tm1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal">Edit User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="text-center">
+                <div class="modal-body">
+                    <form name="modForm">
+                        <label for="id1">User Id</label>
+                        </br>
+                        <input type="text" name="id" readonly value="" id="id1"/>
+                        </br>
+                        <label for="login1">Enter User Name</label>
+                        </br>
+                        <input type="text" name="Login" value="" id="login1"/>
+                        </br>
+                        <label for="FirstName1">Enter First Name</label>
+                        </br>
+                        <input type="text" name="fn" value="" id="FirstName1"/>
+                        </br>
+                        <label for="LastName1">Enter Last Name</label>
+                        </br>
+                        <input type="text" name="ln" value="" id="LastName1"/>
+                        </br>
+                        <label for="password1">Enter Password</label>
+                        </br>
+                        <input type="password" name="pass" value="" id="password1"/>
+                        </br>
+                        <input name="r1" id="USER1" type="radio" value="USER" checked> USER
+                        <input name="r1" id="ADMIN2" type="radio" value="ADMIN"> ADMIN
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" onclick="deleteUser()"  class="btn btn-primary deleteColor">DELETE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/test.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
