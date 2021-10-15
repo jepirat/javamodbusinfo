@@ -18,7 +18,6 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id", nullable = false )
     private long id;
-    @Column(unique=true)
     private String name;
 
     @Transient

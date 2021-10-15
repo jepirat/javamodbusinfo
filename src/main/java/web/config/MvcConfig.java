@@ -34,7 +34,7 @@ public class MvcConfig implements WebMvcConfigurer {
 //        roleRepo.save(role);
 //        roleSet.add(role);
 //        User user = new User("admin", "a", "a", "a", roleSet);
-//        userService.save(user);
+//        userService.update(user);
         return new SpringSecurityDialect();
     }
 }
