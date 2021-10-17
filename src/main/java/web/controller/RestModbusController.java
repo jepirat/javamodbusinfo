@@ -14,7 +14,7 @@ public class RestModbusController {
         this.modbusService = modbusService;
     }
 
-    @GetMapping
+    @GetMapping("/modbus")
     public ResponseEntity<String []> getData() {
         return new ResponseEntity<String []>(modbusService.testPort(), HttpStatus.OK);
     }

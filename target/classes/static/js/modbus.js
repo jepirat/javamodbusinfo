@@ -1,4 +1,4 @@
-let url = '/modbusinfo'
+let url = '/modbus'
 
 async function sendRequest(url) {
    // let userRoles = []
