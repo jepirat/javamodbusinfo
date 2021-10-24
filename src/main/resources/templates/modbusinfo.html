@@ -5,17 +5,19 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Погода в доме</title>
 </head>
 <body>
+<h3>Привет. Добро пожаловать ко мне в гости.
+    <br>Тут вы можете посмотреть информацию о погоде у меня дома.</h3>
+
 <th1 id="temperature">Тут будет вывод информации о темпратуре</th1>
 <br>
 <th1 id="humidity">Тут будет вывод информации о влажности</th1>
 <br>
 <button type="button">Кнопка 1</button>
 <button type="button">Кнопка 2</button>
-<button type="button">кнопка 3</button>
-<button type="button">Кнопка 4</button>
+
 <script th:src="@{/js/modbus.js}"></script>
 </body>
 </html>

@@ -6,29 +6,25 @@ import com.intelligt.modbus.jlibmodbus.exception.ModbusProtocolException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import web.services.ModbusService;
+import web.services.ModbusServiceSensor;
 
 @RestController
 public class RestModbusController {
-    ModbusService modbusService;
+    ModbusServiceSensor modbusServiceSensor;
 
-    public RestModbusController(ModbusService modbusService) {
-        this.modbusService = modbusService;
+    public RestModbusController(ModbusServiceSensor modbusServiceSensor) {
+        this.modbusServiceSensor = modbusServiceSensor;
     }
 
     @GetMapping("/ports")
     public ResponseEntity<String []> getData() {
-        return new ResponseEntity<String []>(modbusService.testPort(), HttpStatus.OK);
+        return new ResponseEntity<String []>(modbusServiceSensor.getPorts(), HttpStatus.OK);
     }
 
-    @GetMapping("/temperature")
-    public ResponseEntity<String> getTemperature() throws ModbusProtocolException, ModbusNumberException, ModbusIOException {
-        return new  ResponseEntity<String>(modbusService.getTemperature(), HttpStatus.OK);
-    }
-
-    @GetMapping("/humidity")
-    public ResponseEntity<String> getHumidity() {
-        return null;
+    @GetMapping("/data")
+    public ResponseEntity<int[]> getTemperature() throws ModbusProtocolException, ModbusNumberException, ModbusIOException {
+        return new ResponseEntity<int[]>(modbusServiceSensor.getData(), HttpStatus.OK);
     }
 }

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings</title>
+</head>
+<body>
+<h3>Сохраненный порт = [[${savedPort}]]</h3>
+<h3>Тут можно внести настройки ModbusRTU</h3>
+
+<form  method="POST" action="/settings" >
+<select name="port">
+    <option th:each="port : ${systemSerialPorts}" th:value="${port}" th:text="${port}">
+</select>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
